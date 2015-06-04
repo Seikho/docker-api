@@ -2,16 +2,25 @@
 
 #### Installation
 ```
-npm install docker-webapi 
+npm install docker-restapi 
 ```
 
 #### Usage
 
-The API 
+The API is a function that sends a request to the RESTful API and returns a promise.  
+The promise resolves with the JSON parsed result or is rejected if an error was encountered.
 
 ```javascript
 var docker = require("docker-restapi");
-docker("/images/json").then(console.log);
+docker("/images/json") // GET request by default
+  .then(function(images) {
+	  // ...
+  });
+  
+docker("/containers/create", "POST") // Specify POST for POST requests
+.then(function(results) {
+	  // ...
+  });
 ```
 
 #### TODO
