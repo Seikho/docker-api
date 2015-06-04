@@ -50,5 +50,4 @@ function dockerOptions(request, method, url, port) {
         options.method = "GET";
     return options;
 }
-boot2docker("/images/json").then(console.log);
 module.exports = docker;

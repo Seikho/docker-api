@@ -62,5 +62,3 @@ function dockerOptions(request: string, method?: string, url?: string, port?: nu
 
 	return options;
 }
-
-boot2docker("/images/json").then(console.log);
