@@ -3,9 +3,6 @@
   "version": "0.2.0",
   "description": "A simple API for programmatic access to the Docker RESTful API",
   "main": "src/index.js",
-  "bin": {
-    "docker-restapi": "index.js"
-  },
   "scripts": {
     "test": "mocha"
   },
