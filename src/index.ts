@@ -3,7 +3,6 @@ import path = require("path");
 import https = require("https");
 import http = require("http");
 import fs = require("fs");
-export = docker;
 var readFileAsync = Promise.promisify(fs.readFile);
 var cwd = path.resolve(__dirname);
 
@@ -12,9 +11,29 @@ var cwd = path.resolve(__dirname);
 // TODO: Ensure API requests are prefixed with a forward-slash
 // TODO: Ensure docker() works as intended on *nix systems
 // TODO: key/cert/ca location should be configurable
+var dockerConfig = {
+	hostname: "192.168.59.103",
+	sslPath: cwd,
+	version: "v1.18",
+	port: 2376
+}
+
+export function get(request: string) {
+	return docker(request);
+}
+
+export function post(request: string) {
+	return docker(request, "POST");
+}
+
+export function config(updatedConfig: any) {
+	for (var key in updatedConfig) {
+		dockerConfig[key] = updatedConfig[key];
+	}
+}
 
 function docker(request: string, method?: string) {
-	var options = dockerOptions(request, method, "192.168.59.103");
+	var options = dockerOptions(request, method);
 	
 	// Windows Docker API requires SSL information
 	var keyPromise = readFileAsync(path.join(cwd, "key.pem"))
@@ -47,13 +66,13 @@ function dockerPromise(options: https.RequestOptions, requestApi: any) {
 	});
 }
 
-function dockerOptions(request: string, method?: string, url?: string, port?: number): https.RequestOptions {
+function dockerOptions(request: string, method?: string): https.RequestOptions {
 	var options = {
 		key: "",
 		cert: "",
 		ca: "",
-		hostname: url || "192.168.59.103",
-		port: port || 2376,
+		hostname: dockerConfig.hostname,
+		port: dockerConfig.port,
 		method: method || "GET",
 		path: request
 	};

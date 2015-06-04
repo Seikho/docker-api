@@ -9,8 +9,28 @@ var cwd = path.resolve(__dirname);
 // TODO: Ensure API requests are prefixed with a forward-slash
 // TODO: Ensure docker() works as intended on *nix systems
 // TODO: key/cert/ca location should be configurable
+var dockerConfig = {
+    hostname: "192.168.59.103",
+    sslPath: cwd,
+    version: "v1.18",
+    port: 2376
+};
+function get(request) {
+    return docker(request);
+}
+exports.get = get;
+function post(request) {
+    return docker(request, "POST");
+}
+exports.post = post;
+function config(updatedConfig) {
+    for (var key in updatedConfig) {
+        dockerConfig[key] = updatedConfig[key];
+    }
+}
+exports.config = config;
 function docker(request, method) {
-    var options = dockerOptions(request, method, "192.168.59.103");
+    var options = dockerOptions(request, method);
     // Windows Docker API requires SSL information
     var keyPromise = readFileAsync(path.join(cwd, "key.pem"))
         .then(function (key) { options.key = key.toString(); });
@@ -36,13 +56,13 @@ function dockerPromise(options, requestApi) {
         req.end();
     });
 }
-function dockerOptions(request, method, url, port) {
+function dockerOptions(request, method) {
     var options = {
         key: "",
         cert: "",
         ca: "",
-        hostname: url || "192.168.59.103",
-        port: port || 2376,
+        hostname: dockerConfig.hostname,
+        port: dockerConfig.port,
         method: method || "GET",
         path: request
     };
@@ -50,4 +70,3 @@ function dockerOptions(request, method, url, port) {
         options.method = "GET";
     return options;
 }
-module.exports = docker;

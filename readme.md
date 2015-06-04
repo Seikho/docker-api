@@ -11,6 +11,7 @@ The API is a function that sends a request to the RESTful API and returns a prom
 The promise resolves with the JSON parsed result or is rejected if an error was encountered.
 
 ```javascript
+
 var docker = require("docker-restapi");
 docker("/images/json") // GET request by default
   .then(function(images) {
@@ -26,8 +27,8 @@ docker("/containers/create", "POST") // Specify POST for POST requests
 #### TODO
 
 API configuration:
-* End-point
-* SSL information
-* API version target
+* End-point (url)
+* SSL information (path)
+* API version target (defaults to v1.18)
 
 JavaScript Wrapper of the v1.18 Docker REST Api
