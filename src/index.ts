@@ -36,13 +36,14 @@ function docker(request: string, method?: string) {
 	var options = dockerOptions(request, method);
 	
 	// Windows Docker API requires SSL information
-	var keyPromise = readFileAsync(path.join(cwd, "key.pem"))
+	var basePath = path.resolve(dockerConfig.sslPath);
+	var keyPromise = readFileAsync(path.join(basePath, "key.pem"))
 		.then(key => { options.key = key.toString(); });
 
-	var certPromise = readFileAsync(path.join(cwd, "cert.pem"))
+	var certPromise = readFileAsync(path.join(basePath, "cert.pem"))
 		.then(cert => { options.cert = cert.toString(); });
 
-	var caPromise = readFileAsync(path.join(cwd, "ca.pem"))
+	var caPromise = readFileAsync(path.join(basePath, "ca.pem"))
 		.then(ca => { options.ca = ca.toString(); });
 	
 	return Promise.all([keyPromise, certPromise, caPromise]).then(() => {
