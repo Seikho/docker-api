@@ -8,7 +8,8 @@ var cwd = path.resolve(__dirname);
 // TODO: Docker API version should be in config
 // TODO: Ensure API requests are prefixed with a forward-slash
 // TODO: Ensure docker() works as intended on *nix systems
-function boot2docker(request, method) {
+// TODO: key/cert/ca location should be configurable
+function docker(request, method) {
     var options = dockerOptions(request, method, "192.168.59.103");
     // Windows Docker API requires SSL information
     var keyPromise = readFileAsync(path.join(cwd, "key.pem"))
@@ -21,7 +22,6 @@ function boot2docker(request, method) {
         return dockerPromise(options, https.request);
     });
 }
-exports.boot2docker = boot2docker;
 function dockerPromise(options, requestApi) {
     var dockerResponse = "";
     return new Promise(function (resolve, reject) {
@@ -51,3 +51,4 @@ function dockerOptions(request, method, url, port) {
     return options;
 }
 boot2docker("/images/json").then(console.log);
+module.exports = docker;

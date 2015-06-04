@@ -3,7 +3,7 @@ import path = require("path");
 import https = require("https");
 import http = require("http");
 import fs = require("fs");
-
+export = docker;
 var readFileAsync = Promise.promisify(fs.readFile);
 var cwd = path.resolve(__dirname);
 
@@ -13,7 +13,7 @@ var cwd = path.resolve(__dirname);
 // TODO: Ensure docker() works as intended on *nix systems
 // TODO: key/cert/ca location should be configurable
 
-export function boot2docker(request: string, method?: string) {
+function docker(request: string, method?: string) {
 	var options = dockerOptions(request, method, "192.168.59.103");
 	
 	// Windows Docker API requires SSL information
