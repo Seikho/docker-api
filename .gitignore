@@ -1,0 +1,4 @@
+node_modules/
+tsd.json
+.settings/
+.git/
