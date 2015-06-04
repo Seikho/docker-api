@@ -13,12 +13,12 @@ The promise resolves with the JSON parsed result or is rejected if an error was 
 ```javascript
 
 var docker = require("docker-restapi");
-docker("/images/json") // GET request by default
+docker.get("/images/json") // GET request by default
   .then(function(images) {
 	  // ...
   });
   
-docker("/containers/create", "POST") // Specify POST for POST requests
+docker.post("/containers/create") // Specify POST for POST requests
 .then(function(results) {
 	  // ...
   });
